@@ -36,11 +36,11 @@ first_digit(N) --> letter, first_digit(N).
 last_digit(N) --> ..., digit(N).
 last_digit(N) --> last_digit(N),letter.
 
-sum_first_and_last(N) --> keep_first_digit(N1), last_digit(N2), {number_chars(N, [N1,N2])}.
+concat_first_and_last_digit(N) --> keep_first_digit(N1), last_digit(N2), {number_chars(N, [N1,N2])}.
 
 sum_lines([], 0).
 sum_lines([Line|Lines], N) :-
-  phrase(sum_first_and_last(N1), Line),
+  phrase(concat_first_and_last_digit(N1), Line),
   sum_lines(Lines, N0),
   N #= N0 + N1.
 
