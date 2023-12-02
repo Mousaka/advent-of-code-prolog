@@ -14,7 +14,7 @@ digit('7') -->"7".
 digit('8') -->"8".
 digit('9') -->"9".
 
-% Comment these for part 1
+% Comment/removev these for part 1
 digit('1') -->"one".
 digit('2') -->"two".
 digit('3') -->"three".
@@ -43,7 +43,6 @@ sum_lines([Line|Lines], N) :-
   phrase(concat_first_and_last_digit(N1), Line),
   sum_lines(Lines, N0),
   N #= N0 + N1.
-
 
 solve(Sum) :-
  phrase_from_file(lines(Ls), '1.txt'), sum_lines(Ls, Sum).
