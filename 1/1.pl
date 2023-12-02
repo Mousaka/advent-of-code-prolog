@@ -3,16 +3,16 @@
 :- use_module(library(charsio)).
 
 
-digit(0)-->"0".
-digit(1)-->"1".
-digit(2)-->"2".
-digit(3)-->"3".
-digit(4)-->"4".
-digit(5)-->"5".
-digit(6)-->"6".
-digit(7)-->"7".
-digit(8)-->"8".
-digit(9)-->"9".
+digit('0') -->"0".
+digit('1') -->"1".
+digit('2') -->"2".
+digit('3') -->"3".
+digit('4') -->"4".
+digit('5') -->"5".
+digit('6') -->"6".
+digit('7') -->"7".
+digit('8') -->"8".
+digit('9') -->"9".
 
 nat(N)   --> digit(D), nat(D,N).
 nat(N,N) --> [].
@@ -21,7 +21,7 @@ nat(A,N) --> digit(D), { A1 is A*10 + D }, nat(A1,N).
 letter --> [A], { char_type(A, alpha) }.
 
 
-keep_first_number(N), [H] --> first_number(N), { number_chars(N, [H]) }.
+keep_first_number(N), [N] --> first_number(N).
 keep_first_number(N) --> digit(N). 
 
 first_number(N) --> digit(N), ... .
@@ -32,7 +32,7 @@ last_number(N) --> ..., digit(N).
 last_number(N) --> last_number(N),letter.
 
 
-sum_first_and_last(Sum) --> keep_first_number(N1), last_number(N2), { Sum is N1 + N2 }.
+sum_first_and_last(N) --> keep_first_number(N1), last_number(N2), {number_chars(N, [N1,N2])}.
 
 sum_lines([], 0).
 sum_lines([Line|Lines], N) :-
