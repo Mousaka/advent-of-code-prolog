@@ -14,25 +14,29 @@ digit('7') -->"7".
 digit('8') -->"8".
 digit('9') -->"9".
 
-nat(N)   --> digit(D), nat(D,N).
-nat(N,N) --> [].
-nat(A,N) --> digit(D), { A1 is A*10 + D }, nat(A1,N).
+% Comment these for part 1
+digit('1') -->"one".
+digit('2') -->"two".
+digit('3') -->"three".
+digit('4') -->"four".
+digit('5') -->"five".
+digit('6') -->"six".
+digit('7') -->"seven".
+digit('8') -->"eight".
+digit('9') -->"nine".
 
 letter --> [A], { char_type(A, alpha) }.
 
+keep_first_digit(N), [N] --> first_digit(N).
+keep_first_digit(N) --> digit(N). 
 
-keep_first_number(N), [N] --> first_number(N).
-keep_first_number(N) --> digit(N). 
+first_digit(N) --> digit(N), ... .
+first_digit(N) --> letter, first_digit(N).
 
-first_number(N) --> digit(N), ... .
-first_number(N) --> letter, first_number(N).
+last_digit(N) --> ..., digit(N).
+last_digit(N) --> last_digit(N),letter.
 
-
-last_number(N) --> ..., digit(N).
-last_number(N) --> last_number(N),letter.
-
-
-sum_first_and_last(N) --> keep_first_number(N1), last_number(N2), {number_chars(N, [N1,N2])}.
+sum_first_and_last(N) --> keep_first_digit(N1), last_digit(N2), {number_chars(N, [N1,N2])}.
 
 sum_lines([], 0).
 sum_lines([Line|Lines], N) :-
@@ -45,9 +49,8 @@ solve(Sum) :-
  phrase_from_file(lines(Ls), '1.txt'), sum_lines(Ls, Sum).
 
 
-% ["1abc2", "pqr3stu8vwx", "a1b2c3d4e5f", "treb7uchet"]
-
-
+% Reading lines
+ 
 eos([], []).
 
 line([]) -->
