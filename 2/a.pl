@@ -3,7 +3,6 @@
 :- use_module(library(charsio)).
 
 
-
 number([A|As]) --> [A], { char_type(A, numeric) }, number(As).
 number([])     --> [].
 
@@ -40,9 +39,6 @@ parse_sets(Invalid) --> parse_set(_,Invalid1), "; ", parse_sets(Invalid0),
                         { Invalid #= Invalid0 + Invalid1}.
      
 parse_sets(Invalid) --> parse_set(_,Invalid). 
-
-%12 red cubes, 13 green cubes, and 14 blue cubes
-
 
 game_line(Id) --> "Game ", number(Id0), ": ", parse_sets(Invalid),
                   {if_(dif(Invalid, 0),
