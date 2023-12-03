@@ -18,6 +18,15 @@ color_count((0,0,N)) --> number(N0), " ", color(green), { number_chars(N, N0) }.
 cube_delimiter --> ", ".
 cube_delimiter, ";" --> ";".
 
+% Took me such a long time before I noted that the operator ','/3 is suppose to have '' around it. :(
+parse_set((B,R,G), Invalid) -->  
+  parse_set((B,R,G)),
+  { if_((R #< 13',' G #< 14',' B #< 15),
+        Invalid #= 0,
+        Invalid #= 1
+       )
+  }. 
+
 parse_set(Cube) --> color_count(Cube).
 parse_set((B,R,G)) --> 
   color_count((B1,R1,G1)),
@@ -27,23 +36,20 @@ parse_set((B,R,G)) -->
     R #= R1 + R0,
     G #= G1 + G0 }.
 
-
-parse_sets((B,R,G)) --> parse_set((B1,R1,G1)), "; ", parse_sets((B0,R0,G0)),
-                  { B #= B1 + B0,
-                    R #= R1 + R0,
-                    G #= G1 + G0 }. 
-parse_sets(S) --> parse_set(S). 
+parse_sets(Invalid) --> parse_set(_,Invalid1), "; ", parse_sets(Invalid0),
+                        { Invalid #= Invalid0 + Invalid1}.
+     
+parse_sets(Invalid) --> parse_set(_,Invalid). 
 
 %12 red cubes, 13 green cubes, and 14 blue cubes
 
 
-% Took me such a long time before I noted that the operator ','/3 is suppose to have '' around it. :(
-game_line(Id) --> "Game ", number(Id0), ": ", parse_sets((B,R,G)),
-    { if_((R #< 13',' G #< 14',' B #< 15),
-          number_chars(Id,Id0),
-          Id #= 0
-          )
-       }.  
+game_line(Id) --> "Game ", number(Id0), ": ", parse_sets(Invalid),
+                  {if_(dif(Invalid, 0),
+                       Id #= 0,
+                       number_chars(Id,Id0)
+                      )
+                  }.
 
 game_id_count([], 0).
 game_id_count([Line|Lines], N) :-
