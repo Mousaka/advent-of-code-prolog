@@ -1,10 +1,21 @@
 % Example
 % records([(7,9), (15,40), (30,200)]).
 % Part 1
-%records([(48, 261),(93, 1192),(84,1019),(66,1063)]).
+records([(48, 261),(93, 1192),(84,1019),(66,1063)]).
 
 % Part 2
-records([(71530,940200)]).
+% example
+% records([(71530,940200)]).
+% real
+% (48938466,261119210191063)
+
+
+
+
+% boundries_record(Upper, Lower, (T, D)) :-
+%     once((beats_record(Upper, (T,D)), labeling([max(Upper)],[Upper]))),
+%     once((beats_record(Lower, (T,D)), labeling([min(Lower)],[Lower]))).
+
 
 beats_record(B, (T, D)) :-
   B #>= 0,
