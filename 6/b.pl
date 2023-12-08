@@ -22,7 +22,6 @@ solve(S):-
 % Read more https://github.com/mthom/scryer-prolog/discussions/2213#discussioncomment-7794704
 alt_solve(S):-
   input(R),
-  once((beats_record(Upper, R), labeling([down],[Upper]))),
-  once((beats_record(Bottom, R), label([Bottom]))),
-  S #= Upper - Bottom + 1.
+  once((beats_record(Upper, R), labeling([down],[Upper]),beats_record(Lower, R), indomain(Lower))),
+  S #= Upper - Lower + 1.
  
