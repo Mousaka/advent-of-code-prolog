@@ -2,9 +2,7 @@
 :- use_module(library(pio)).
 :- use_module(library(charsio)).
 :- use_module(library(ordsets)).
-
-number([A|As]) --> [A], { char_type(A, numeric) }, number(As).
-number([])     --> [].
+:- use_module('../utils.pl').
 
 spacing --> " ".
 spacing --> "  ".
@@ -55,14 +53,4 @@ solve(Sum) :-
 solve_ex(Sum) :-
  phrase_from_file(lines(Ls), 'example.txt'), score_games(Ls, Sum).
 
-% Reading lines
- 
-eos([], []).
-
-line([]) -->
-  ( "\n" | call(eos) ).
-line([C|Cs]) --> [C], line(Cs).
-
-lines([]) --> call(eos), !.
-lines([L|Ls]) --> line(L), lines(Ls).
 

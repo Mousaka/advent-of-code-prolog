@@ -1,7 +1,7 @@
 :- use_module(library(dcgs)).
 :- use_module(library(pio)).
 :- use_module(library(charsio)).
-
+:- use_module('../utils.pl').
 
 digit('0') -->"0".
 digit('1') -->"1".
@@ -50,11 +50,11 @@ solve(Sum) :-
 
 % Reading lines
  
-eos([], []).
+% eos([], []).
 
-line([]) -->
-  ( "\n" | call(eos) ).
-line([C|Cs]) --> [C], line(Cs).
+% line([]) -->
+%   ( "\n" | call(eos) ).
+% line([C|Cs]) --> [C], line(Cs).
 
-lines([]) --> call(eos), !.
-lines([L|Ls]) --> line(L), lines(Ls).
+% lines([]) --> call(eos), !.
+% lines([L|Ls]) --> line(L), lines(Ls).

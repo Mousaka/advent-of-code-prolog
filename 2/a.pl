@@ -1,18 +1,15 @@
 :- use_module(library(dcgs)).
 :- use_module(library(pio)).
 :- use_module(library(charsio)).
-
-
-number([A|As]) --> [A], { char_type(A, numeric) }, number(As).
-number([])     --> [].
-
+:- use_module('../utils.pl').
+  
 color(blue) --> "blue".
 color(red) --> "red".
 color(green) --> "green".
 
-color_count((N,0,0)) --> number(N0), " ", color(blue), { number_chars(N, N0) }.
-color_count((0,N,0)) --> number(N0), " ", color(red), { number_chars(N, N0) }.
-color_count((0,0,N)) --> number(N0), " ", color(green), { number_chars(N, N0) }.
+color_count((N,0,0)) --> number(N), " ", color(blue).
+color_count((0,N,0)) --> number(N), " ", color(red).
+color_count((0,0,N)) --> number(N), " ", color(green).
 
 cube_delimiter --> ", ".
 cube_delimiter, ";" --> ";".
@@ -43,7 +40,7 @@ parse_sets(Invalid) --> parse_set(_,Invalid).
 game_line(Id) --> "Game ", number(Id0), ": ", parse_sets(Invalid),
                   {if_(dif(Invalid, 0),
                        Id #= 0,
-                       number_chars(Id,Id0)
+                       Id #= Id0 
                       )
                   }.
 
@@ -59,14 +56,4 @@ solve(Sum) :-
 solve_ex(Sum) :-
  phrase_from_file(lines(Ls), 'example.txt'), game_id_count(Ls, Sum).
 
-% Reading lines
- 
-eos([], []).
-
-line([]) -->
-  ( "\n" | call(eos) ).
-line([C|Cs]) --> [C], line(Cs).
-
-lines([]) --> call(eos), !.
-lines([L|Ls]) --> line(L), lines(Ls).
 
