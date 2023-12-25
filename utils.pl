@@ -22,6 +22,7 @@ Provides some utility functions useful for the solutions.
 :- use_module(library(charsio)).
 :- use_module(library(debug)).
 :- use_module(library(clpz)).
+:- use_module(library(pio)).
 
 :- meta_predicate filter(1, ?, ?).
 :- meta_predicate forlist(?, 2, ?).
@@ -84,6 +85,7 @@ seqof_(P) --> seqof(P,_).
 number(X) --> number([], X).
 number(X, Z) --> [C], { char_type(C, numeric) }, number([C|X], Z).
 number(X, Z) --> { length(X, L), L #> 0, reverse(X, X1), number_chars(Z, X1) }.
+znumber(X) --> "-", number(Y), { X #= -Y }; number(X).
 a_digit(X) --> [X], {char_type(X, numeric)}.
 word([X|Xs]) --> [X], { char_type(X, alnum) }, word(Xs).
 word([]) --> "".
@@ -141,3 +143,11 @@ map_assoc_with_key_(t(K,Val,_,L,R), Pred) :-
     map_assoc_with_key_(L, Pred),
     call(Pred, K, Val),
     map_assoc_with_key_(R, Pred).
+
+
+bubblesort(Ls0, Ls) :-
+    (	append(Lefts, [A,B|Rights], Ls0), A @> B ->
+	append(Lefts, [B,A|Rights], Ls1),
+	bubblesort(Ls1, Ls)
+    ;	Ls = Ls0
+    ).
