@@ -1,24 +1,20 @@
 :- use_module('../utils.pl').
 
+all_zero_sum(X,Sum0,Sum):-
+   if_((X #= 0 ',' Sum0 #= 0), Sum #= 0, Sum #= 1). 
+
+
 diff_numbers([A,B|Ls],[Diff|Rest]):-
   Diff #= B - A,
   length([B|Ls],L),
   if_(L #< 2, Rest = [], diff_numbers([B|Ls], Rest) ).
 
-all_zero_sum(X,Sum0,Sum):-
-   if_((X #= 0 ',' Sum0 #= 0), Sum #= 0, Sum #= 1). 
 
 diff_until_zeros(Ls, [Diff|Rest]):-
   diff_numbers(Ls, Diff),
-
-  % All diff values should be ascending or descending 
-  % maplist(\ X^Y^(Y#=abs(X)), Diff, DiffAbs),
-  % chain(#=<, Diff), 
-  % asc_or_desc(Diff),
-  % ----------------
-  
   foldl(all_zero_sum,Diff,0,Sum),
   if_(Sum #= 0, Rest = [], diff_until_zeros(Diff, Rest)).
+
 
 oasis_number(Ls, N):-
   reverse(Ls, LsRev),
@@ -34,27 +30,6 @@ solve(N):-
   maplist(oasis_number, Ls, Os),
   sum_list(Os,N).
 
-asc_or_desc(Ls):-
-  a_or_d(Ls,_).
-
-a_or_d(Ls, R):-
-  length(Ls, L),
-
-  if_(L #< 2,
-    R #= 1,
-    (
-      [A,B|Rest] = Ls,
-      if_(
-        A #= B,
-        a_or_d([B|Rest],R),
-        if_(
-          A #< B,
-          (chain(#=<, [A,B|Rest]), R #= 1),
-          (chain(#>=, [A,B|Rest]), R #= 1)
-        )
-      )
-    )
-  ).
 
 %%%%%%%%%%% Testing
 i([0,3,6,9,12,15]).
