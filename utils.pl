@@ -1,4 +1,4 @@
-% Stolen from @jasagredo https://github.com/jasagredo/advent-of-prolog-2023/blob/main/src/utils.pl
+% Copied from @jasagredo https://github.com/jasagredo/advent-of-prolog-2023/blob/main/src/utils.pl
 /**
 Provides some utility functions useful for the solutions.
 */
