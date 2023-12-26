@@ -22,15 +22,23 @@ oasis_number(Ls, N):-
   diff_until_zeros(LsN,_).
 
 
-solve(N):-
+oasis_number_p2(Ls, N):-
+  diff_until_zeros([N|Ls],_).
+
+solve(N,PartSolver):-
   phrase_from_file(lines(Lines), 'input.txt'),
   once(maplist(\X^Y^phrase(seqDelimited(' ', znumber, Y), X),
             Lines,
             Ls)),
-  maplist(oasis_number, Ls, Os),
+  maplist(PartSolver, Ls, Os),
   sum_list(Os,N).
 
+part1(S):-
+  solve(S,oasis_number).
 
+part2(S):-
+  solve(S,oasis_number_p2).
+  
 %%%%%%%%%%% Testing
 i([0,3,6,9,12,15]).
 j([1, 3, 6,10, 15 ,21]).
