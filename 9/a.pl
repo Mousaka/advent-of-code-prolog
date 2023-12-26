@@ -12,7 +12,7 @@ diff_numbers([A,B|Ls],[Diff|Rest]):-
 
 diff_until_zeros(Ls, [Diff|Rest]):-
   diff_numbers(Ls, Diff),
-  foldl(all_zero_sum,Diff,0,Sum), % Returns Sum binds to 0 if all Diffs are 0, otherwise 1.
+  foldl(all_zero_sum,Diff,0,Sum), % Sum binds to 0 if all Diffs are 0, otherwise 1.
   if_(Sum #= 0, Rest = [], diff_until_zeros(Diff, Rest)).
 
 
