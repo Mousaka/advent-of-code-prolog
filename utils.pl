@@ -160,3 +160,31 @@ bubblesort(Ls0, Ls) :-
 	bubblesort(Ls1, Ls)
     ;	Ls = Ls0
     ).
+
+
+mergesort(Ls0, Ls) :-
+        length(Ls0, L),
+        zcompare(C, L, 1),
+        halving(C, L, Ls0, Ls).
+
+halving(<, _, Ls, Ls).
+halving(=, _, Ls, Ls).
+halving(>, L, Ls0, Ls) :-
+        Half #= L // 2,
+        length(Lefts0, Half),
+        append(Lefts0, Rights0, Ls0),
+        mergesort(Lefts0, Lefts),
+        mergesort(Rights0, Rights),
+        merge(Lefts, Rights, Ls).
+
+% If your Prolog library provides merge/3, you can remove this definition.
+
+merge([], Ys, Ys) :- !.
+merge(Xs, [], Xs) :- !.
+merge([X|Xs], [Y|Ys], Ms) :-
+        (   X @< Y ->
+            Ms = [X|Rs],
+            merge(Xs, [Y|Ys], Rs)
+        ;   Ms = [Y|Rs],
+            merge([X|Xs], Ys, Rs)
+        ).
