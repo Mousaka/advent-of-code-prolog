@@ -87,10 +87,19 @@ number(X, Z) --> [C], { char_type(C, numeric) }, number([C|X], Z).
 number(X, Z) --> { length(X, L), L #> 0, reverse(X, X1), number_chars(Z, X1) }.
 znumber(X) --> "-", number(Y), { X #= -Y }; number(X).
 a_digit(X) --> [X], {char_type(X, numeric)}.
+
+% From Power of Prolog video
+integer(I) --> digits(Ds), {number_chars(I,Ds)}.
+digits([D|Ds]) --> digit(D), digits_r(Ds).
+digits_r([D|Ds]) --> digit(D), digits_r(Ds).
+digits_r([]) --> [].
+digit(D) --> [D], { char_type(D, decimal_digit)}.
+
 word([X|Xs]) --> [X], { char_type(X, alnum) }, word(Xs).
 word([]) --> "".
 
 whitespace(' ').
+ws --> [W], { char_type(W, whitespace) }, ws | []. % Aribtrary length of ws. From Power of Prolog video.
 numeric(X) :- char_type(X, numeric).
 alpha(X) :- char_type(X, alpha).
 alnum(X) :- char_type(X, alnum).
