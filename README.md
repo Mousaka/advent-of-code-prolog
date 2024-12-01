@@ -1,4 +1,4 @@
-# advent-of-code-2023
+# advent-of-code-2023-forward
 Advent of code solutions for 2023
 
 ## How to run Prolog programs
