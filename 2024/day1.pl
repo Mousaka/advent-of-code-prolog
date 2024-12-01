@@ -33,5 +33,28 @@ inner(Ls, Res2) :-
 
 
   
-solve(Sum) :-
+solveA(Sum) :-
  phrase_from_file(lines(Ls), 'day1_input.txt'), inner(Ls, Sum).
+
+
+count(A, [A|T], N):-
+  N #= N0 + 1,
+  count(A, T, N0).
+count(A, [B|T], N):-
+  B #\= A,
+  count(A, T, N).
+count(_, [], 0).
+
+score(Ls, A, Score):-
+  count(A, Ls, Count),
+  Score #= A * Count.
+
+inner2(Ls, Res2) :-
+  innerHelper(Ls, Res),
+  transpose(Res,Res1),
+  [C1, C2] = Res1,
+  maplist(score(C2), C1, Scores),
+  sum_list(Scores, Res2).
+
+solveB(Sum) :-
+ phrase_from_file(lines(Ls), 'day1_input.txt'), inner2(Ls, Sum).
