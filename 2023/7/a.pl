@@ -1,7 +1,7 @@
 
 
 
-:- use_module('../utils.pl').
+:- use_module('../../utils.pl').
 
 
 card_value('2',2).

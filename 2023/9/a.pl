@@ -1,4 +1,4 @@
-:- use_module('../utils.pl').
+:- use_module('../../utils.pl').
 
 zero_or_one_sum(X,Sum0,Sum):-
    if_((X #= 0 ',' Sum0 #= 0), Sum #= 0, Sum #= 1). 

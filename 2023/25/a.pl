@@ -1,4 +1,4 @@
-:- use_module('../utils.pl').
+:- use_module('../../utils.pl').
 :- use_module(library(ordsets)).
 :- use_module(library(dif)).
 jqt-[rhn,xhk,nvd].

@@ -1,7 +1,7 @@
 :- use_module(library(dcgs)).
 :- use_module(library(pio)).
 :- use_module(library(charsio)).
-:- use_module('../utils.pl').
+:- use_module('../../utils.pl').
   
 color(blue) --> "blue".
 color(red) --> "red".
