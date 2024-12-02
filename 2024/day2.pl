@@ -8,29 +8,36 @@
 
 safety_lines(0)          --> call(eos), !.
 safety_lines(N) --> 
-  safety_line(N1),
-  {N #= N0 + N1},
+  row(Ns),
+  {(safe_line(Ns) -> N #= N0 + 1 ; N #= N0 )  },
   safety_lines(N0).
 
-% safety_line(0)     --> ( "\n" ; call(eos) ), !.
-safety_line(1) --> numbers(Ns), { $safe_line(Ns) }, ("\n"; call(eos)).
-safety_line(0) --> numbers(Ns), { \safe_line(Ns) },("\n"; call(eos)).
 
-numbers([]) --> ("\n" ; call(eos)).
-numbers([N|Ns]) --> number(N), ws, numbers(Ns).
+% DCGs for parsing the file
+row([I]) -->
+    integer(I),
+    ws,
+    eol.
 
-number(X) --> number([], X).
-number(X, Z) --> [C], { char_type(C, numeric) }, number([C|X], Z).
-number(X, Z) --> { length(X, L), L #> 0, reverse(X, X1), number_chars(Z, X1) }.
-znumber(X) --> "-", number(Y), { X #= -Y }; number(X).
-a_digit(X) --> [X], {char_type(X, numeric)}.
+row([I | Rest]) -->
+    integer(I),
+    non_zero_ws,
+    row(Rest).
 
+rows([Row | Rest]) -->
+    row(Row),
+    rows(Rest).
+
+rows([]) -->
+    blanks,
+    eos.
 
 safe_line_([_], _):- !.
 safe_line_([A,B|Ls], C) :-
   zcompare(C,A,B),
+  C \= (=),
   D #= abs(A - B),
-  D #=< 2,
+  D #=< 3,
   safe_line_([B|Ls], C).
 
 safe_line(Ls) :-
@@ -39,4 +46,5 @@ safe_line(Ls) :-
 
 
 solveA(Sum) :-
- phrase_from_file(safety_linez(Sum), 'day2_input.txt').
+  phrase_from_file(safety_lines(Sum), 'day2_input.txt').
+%  phrase_from_file(safety_lines(Sum), 'day2_example.txt').

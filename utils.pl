@@ -100,6 +100,7 @@ word([]) --> "".
 
 whitespace(' ').
 ws --> [W], { char_type(W, whitespace) }, ws | []. % Aribtrary length of ws. From Power of Prolog video.
+non_zero_ws --> [W], { char_type(W, whitespace) }, ws. 
 numeric(X) :- char_type(X, numeric).
 alpha(X) :- char_type(X, alpha).
 alnum(X) :- char_type(X, alnum).
