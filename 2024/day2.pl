@@ -48,3 +48,22 @@ safe_line(Ls) :-
 solveA(Sum) :-
   phrase_from_file(safety_lines(Sum), 'day2_input.txt').
 %  phrase_from_file(safety_lines(Sum), 'day2_example.txt').
+
+%% ----------- B ----------
+
+safe_lineB(Ls) :-
+  safe_line(Ls).
+safe_lineB(Ls) :-
+  select(_, Ls, OneRemoved),
+  safe_line(OneRemoved).
+
+safety_linesB(0)          --> call(eos), !.
+safety_linesB(N) --> 
+   row(Ns),
+   {(safe_lineB(Ns) -> N #= N0 + 1 ; N #= N0 )  },
+   safety_linesB(N0).
+
+
+solveB(Sum) :-
+  phrase_from_file(safety_linesB(Sum), 'day2_input.txt').
+  % phrase_from_file(safety_linesB(Sum), 'day2_example.txt').
