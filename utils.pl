@@ -105,6 +105,17 @@ numeric(X) :- char_type(X, numeric).
 alpha(X) :- char_type(X, alpha).
 alnum(X) :- char_type(X, alnum).
 
+%%%% from metalevel
+include(Goal, List, Included) :-
+        phrase(include_(List, Goal), Included).
+
+include_([], _) --> [].
+include_([L|Ls], Goal) -->
+        (   { call(Goal, L) } ->
+            [L]
+        ;   []
+        ),
+        include_(Ls, Goal).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                 Lists                                      %%
