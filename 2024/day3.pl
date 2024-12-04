@@ -18,3 +18,16 @@ all_muls(N) --> [_], all_muls(N).
 
 solveA(N):-
     phrase_from_file(all_muls(N),'day3_input.txt').
+    
+
+state(S), [S] --> [S].
+state(S0, S), [S] --> [S0].
+
+do(0) --> ( call(eos) ), !.
+do(N) --> "don't()", dont(N).                     %'
+do(N) --> next_mul(N0), {N #= N0 + N1 },do(N1).
+do(N) --> [_], dont(N).
+
+dont(0) --> ( call(eos) ), !.
+dont(N) --> "do()", do(N).
+dont(N) --> [_], dont(N).
