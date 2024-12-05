@@ -69,3 +69,33 @@ solveA(N):-
   findall(_, xmas_board(Ls),Solutions),
   length(Solutions,N).
 
+
+%%%%%%%%%%%%%%%%%% Part 2
+
+ms("MM"
+  ,"SS").
+ms("SM"
+  ,"SM").
+ms("SS"
+  ,"MM").
+ms("MS"
+  ,"MS").
+
+xmasb(Rows):-
+  I__ #= I_ + 1,
+  I_ #= I + 1,
+
+  I3 - I1 #= 2,
+  I22 #= I1 + 1,
+
+  nth0(I, Rows, Row), nth0(I1, Row, A11), nth0(I3, Row, A13),
+  nth0(I_, Rows, Row_), nth0(I22, Row_, 'A'),
+  nth0(I__, Rows, Row__), nth0(I1, Row__, A31), nth0(I3, Row__, A33),
+
+  ms([A11,A13]
+    ,[A31,A33]).
+    
+solveB(N):-
+  phrase_from_file(lines(Ls), 'day4_input.txt'),
+  findall(_, xmasb(Ls),Solutions),
+  length(Solutions,N).
