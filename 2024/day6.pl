@@ -18,7 +18,7 @@ xStep(down, 0).
 xStep(left, -1).
 xStep(right, 1).
 yStep(up, -1).
-yStep(down, -1).
+yStep(down, 1).
 yStep(left, 0).
 yStep(right, 0).
 
@@ -43,27 +43,30 @@ step_forward(Rows,X-Y-D,X1-Y1, Step):-
   Y1 #= Y + Yd,
   step(Rows,X1-Y1, Step).
 
-
-g_n_move_(Rows, Coords-D, Coords1-D, N0, N) :-
-  step_forward(Rows,Coords-D, Coords1, Step),
+g_n_move_(Rows, Coords-D,  N) :-
+  \+ step_forward(Rows,Coords-D, _, _),
+  N #= 1.
+g_n_move_(Rows, Coords-D,  N) :-
+  $step_forward(Rows,Coords-D, Coords1, Step),
+  walkable(Step),
   N #= N0 + 1,
-  walkable(Step), !.
-g_n_move_(_, X-Y-D, Coords1-D1,N0, N) :-
-  step_forward(Rows,X-Y-D, _, Step_),
-  \walkable(Step_),
+  g_n_move_(Rows,Coords1-D, N0).
+g_n_move_(Rows, Coords-D,  N) :-
+  $step_forward(Rows,Coords-D, _,Step_),
+  \+ walkable(Step_),
   turn(D,D1,_),
-  step_forward(Rows,X-Y-D1, Coords1, N0, N).
+  g_n_move_(Rows,Coords-D1, N).
+
 
   
 g_n_move(Rows,Coords-D, N):-
-  g_n_move_(Rows, Coords-D, 0, N). 
+  g_n_move_(Rows, Coords-D, N). 
 % n(Rows, Coord, S0, Next) :- g_n_move_(Rows, Coord, Next, _).
 % n_list(Rows,Ls, S) :- foldl(n(Rows), Ls, 0, S).
 
 
 
 path(Rows, N):-
-  length(Rows, L),
   guard_start_pos(Rows, X-Y-Direction),
   g_n_move(Rows, X-Y-Direction, N).
 
