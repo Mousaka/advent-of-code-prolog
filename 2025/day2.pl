@@ -12,15 +12,19 @@ make_domain([To-From|T], To..From'\\/'TDomain) :-
   make_domain(T, TDomain).
 
 tuple(X-Y) --> integer(X), "-", integer(Y).
+tupleSum(S) --> integer(X), "-", integer(Y), {invalids_in_range(X-Y, S)}.
 
-row([H|T]) -->
-    tuple(H),
+row(Sum) -->
+    tupleSum(S),
     ",",
-    row(T).
+    row(S0),
+    { Sum #= S + S0}.
 
-row([H]) -->
-  tuple(H),
+row(Sum) -->
+  tupleSum(Sum),
   eol.
+
+num_digs(X, N):- N in 1..20, 10^(N - 1) #=< X, X #< 10^N, label([N]).
 
 invalid_id(N):-
   number_chars(N,S),
@@ -29,9 +33,10 @@ invalid_id(N):-
 same_halves(S) :-
   append(Half, Half, S),!.
 
+invalids_in_range(T-F, Sum) :-
+  findall(I, (I #< F + 1, T - 1 #< I, label([I]), invalid_id(I)), Is), sum_list(Is, Sum).
+  
 
-solveA(N) :-
- phrase_from_file(row(Row), 'day2_input.txt'),
- make_domain(Row, Domain), 
- findall(Z, (Z in Domain, label([Z]), invalid_id(Z)), All),
- sum_list(All, N).
+
+solveA(Sum) :-
+ phrase_from_file(row(Sum), 'day2_example.txt').
